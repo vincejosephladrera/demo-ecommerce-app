@@ -51,4 +51,4 @@ type AdminLoginSchemaType = z.infer<typeof AdminLoginSchema>
 
 
 
-export { AdminSignUpSchema, type AdminSignupSchemaType, AdminLoginSchema, type AdminLoginSchemaType };
+export { AdminLoginSchema, type AdminLoginSchemaType,AdminSignUpSchema, type AdminSignupSchemaType };

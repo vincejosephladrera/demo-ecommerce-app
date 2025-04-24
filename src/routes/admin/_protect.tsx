@@ -1,31 +1,9 @@
-import { createFileRoute, Outlet, useLocation, useRouter } from '@tanstack/react-router';
-import { useEffect, useState } from 'react';
+import { createFileRoute } from '@tanstack/react-router';
+
+import LoadingScreen from '@/components/LoadingScreen';
+import AdminLayout from '@/layouts/AdminLayout';
 
 export const Route = createFileRoute('/admin/_protect')({
-	component: RouteComponent,
+	component: AdminLayout,
+	pendingComponent: LoadingScreen,
 });
-
-function RouteComponent() {
-	const location = useLocation();
-	const router = useRouter();
-	const [isAuth, setIsAuth] = useState<boolean | null>(null);
-
-	useEffect(() => {
-		const token = localStorage.getItem('adminToken');
-
-		if (token) {
-			setIsAuth(true);
-		} else {
-			setIsAuth(false);
-			router.navigate({ to: '/admin/signin' });
-		}
-	}, [location.pathname, router]);
-
-	if (!isAuth) return null;
-
-	return (
-		<div>
-			<Outlet />
-		</div>
-	);
-}

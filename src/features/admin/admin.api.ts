@@ -1,6 +1,7 @@
 
 import axios from "axios"
-import { AdminLoginSchemaType, AdminSignupSchemaType } from "./admin.types"
+
+import type { AdminLoginSchemaType, AdminSignupSchemaType } from "./admin.types"
 
 async function signIn(loginData: AdminLoginSchemaType) {
   const { data } = await axios.post('/api/admin', loginData)

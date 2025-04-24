@@ -1,10 +1,18 @@
+import { Link } from '@tanstack/react-router';
+
 import img from '@/assets/images/admin-auth-bg.webp';
 import imgMobile from '@/assets/images/mobile-admin-auth-bg.webp';
 import imgTablet from '@/assets/images/tablet-admin-auth-bg.webp';
-import { Link } from '@tanstack/react-router';
+import LoadingScreen from '@/components/LoadingScreen';
+import useTokenVerify from '@/hooks/useTokenVerify';
+
 import LoginForm from './LoginForm';
 
 function LoginPage() {
+	const { isLoading } = useTokenVerify('dashboard');
+
+	if (isLoading) return <LoadingScreen />;
+
 	return (
 		<section>
 			<div className='grid grid-cols-1 lg:grid-cols-2'>

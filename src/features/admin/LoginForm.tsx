@@ -1,13 +1,16 @@
 // import React from 'react';
-import * as Form from '@/components/shadcn/form';
-import { Input } from '@/components/shadcn/input';
-import { AdminLoginSchema, AdminLoginSchemaType } from './admin.types';
 import { useForm, type UseFormReturn } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Button } from '@/components/shadcn/button';
 import { useMutation } from '@tanstack/react-query';
-import { signIn } from './admin.api';
 import { useRouter } from '@tanstack/react-router';
+
+import { Button } from '@/components/shadcn/button';
+import * as Form from '@/components/shadcn/form';
+import { Input } from '@/components/shadcn/input';
+
+import { signIn } from './admin.api';
+import type { AdminLoginSchemaType } from './admin.types';
+import { AdminLoginSchema } from './admin.types';
 
 function LoginFormView({
 	form,
@@ -66,11 +69,13 @@ function LoginForm() {
 			localStorage.setItem('adminToken', data.token);
 			router.navigate({ to: '/admin/dashboard' });
 		},
+		onError: (error) => {
+			console.error(error);
+		},
 	});
 
 	const onSubmitHandler = (data: AdminLoginSchemaType) => {
 		loginMutation.mutate(data);
-		router.navigate({ to: '/admin/dashboard' });
 	};
 
 	return <LoginFormView form={form} onSubmitHandler={onSubmitHandler} />;
