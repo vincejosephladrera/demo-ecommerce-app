@@ -36,8 +36,8 @@ function SignUpPage() {
             <p className="text-center">
               Have an account?{' '}
               <Link
-                to={'/'}
-                className="text-blue-900 font-medium hover:underline"
+                to={'/admin/signin'}
+                className="text-blue-200 font-medium hover:underline"
               >
                 Sign in
               </Link>

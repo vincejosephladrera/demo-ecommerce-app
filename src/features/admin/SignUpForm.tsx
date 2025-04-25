@@ -1,30 +1,18 @@
-import { useForm, type UseFormReturn } from 'react-hook-form'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { useMutation } from '@tanstack/react-query'
-import { useRouter } from '@tanstack/react-router'
-
+import LoadingScreen from '@/components/LoadingScreen'
 import { Button } from '@/components/shadcn/button'
 import * as Form from '@/components/shadcn/form'
 import { Input } from '@/components/shadcn/input'
 
-import { signUp } from './admin.api'
-import type { AdminSignupSchemaType } from './admin.types'
-import { AdminSignUpSchema } from './admin.types'
-function SignUpFormView({
-  form,
-  onSubmitHandler,
-}: {
-  form: UseFormReturn<AdminSignupSchemaType>
-  onSubmitHandler: (data: AdminSignupSchemaType) => void
-}) {
-  const { control, handleSubmit } = form
+import useSignupForm from './useSignupForm'
+
+function SignUpForm() {
+  const { form, handleSubmit, control, isLoading } = useSignupForm()
+
+  if (isLoading) return <LoadingScreen />
 
   return (
     <Form.Form {...form}>
-      <form
-        onSubmit={handleSubmit(onSubmitHandler)}
-        className=" flex flex-col gap-6"
-      >
+      <form onSubmit={handleSubmit} className=" flex flex-col gap-6">
         <Form.FormField
           control={control}
           name="name"
@@ -72,31 +60,6 @@ function SignUpFormView({
       </form>
     </Form.Form>
   )
-}
-
-function SignUpForm() {
-  const form = useForm<AdminSignupSchemaType>({
-    resolver: zodResolver(AdminSignUpSchema),
-  })
-
-  const router = useRouter()
-
-  const signUpMutation = useMutation({
-    mutationFn: signUp,
-    onSuccess: (data) => {
-      localStorage.setItem('adminToken', data.token)
-      router.navigate({ to: '/admin/dashboard' })
-    },
-    onError: (error: unknown) => {
-      console.log(error)
-    },
-  })
-
-  const onSubmitHandler = (data: AdminSignupSchemaType) => {
-    signUpMutation.mutate(data)
-  }
-
-  return <SignUpFormView form={form} onSubmitHandler={onSubmitHandler} />
 }
 
 export default SignUpForm
